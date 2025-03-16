@@ -4,8 +4,9 @@ use std::io::Stdout;
 use buffers::FrameBuffer;
 use crossterm::cursor;
 use crossterm::cursor::Hide;
+use crossterm::execute;
 use crossterm::style::Print;
-use crossterm::terminal::{disable_raw_mode, size};
+use crossterm::terminal::{disable_raw_mode, size, Clear, ClearType};
 use crossterm::QueueableCommand;
 
 mod buffers;
@@ -15,7 +16,7 @@ fn main() -> std::io::Result<()> {
     let mut stdout: Stdout = stdout();
 
     let (width, height) = size().unwrap();
-    let mut screen = FrameBuffer::new(height, width);
+    let mut screen = FrameBuffer::new(height as usize, width as usize);
 
     disable_raw_mode().unwrap();
     let _ = stdout.queue(Hide);
@@ -31,8 +32,6 @@ fn main() -> std::io::Result<()> {
             }
             screen.flush(&mut stdout).unwrap();
         }
-        screen.clear();
-        screen.swapbuf();
-        screen.flush(&mut stdout).unwrap()
+        execute!(stdout, Clear(ClearType::All))?;
     }
 }

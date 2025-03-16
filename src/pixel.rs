@@ -36,9 +36,9 @@ impl Pixel {
 impl Default for Pixel {
     fn default() -> Self {
         Self {
-            ch: '#',
-            bg: Color::White,
-            fg: Color::White,
+            ch: ' ',
+            bg: Color::Reset,
+            fg: Color::Reset,
         }
     }
 }
